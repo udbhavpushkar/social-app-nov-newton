@@ -5,6 +5,7 @@ const PORT = 8005
 const app = express()
 
 const postsRoutes = require("./routes/post")
+const usersRoutes = require("./routes/user")
 
 //handling cross origin request
 app.use(cors())
@@ -14,6 +15,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 app.use("/post", postsRoutes)
+app.use("/user", usersRoutes)
 
 
 //connect to db
