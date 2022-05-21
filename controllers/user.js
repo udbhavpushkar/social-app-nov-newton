@@ -1,5 +1,6 @@
 const User = require("../models/user")
 const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
 
 const registerUser = async (req, res)=>{
     //Get user detail from request body and store it in varibles
@@ -43,9 +44,7 @@ const registerUser = async (req, res)=>{
 
 const loginUser = async (req, res)=>{
     //get credentials from request body
-    const {email, password} = req.body
-
-    
+    const {email, password} = req.body 
     try{
         //find user with that email
         const user = await User.findOne({email})
@@ -54,7 +53,8 @@ const loginUser = async (req, res)=>{
             res.json({
                 _id: user.id,
                 name: user.name,
-                email: user.email
+                email: user.email,
+                token: generateToken(user.id)
             })
         }else{
             throw "Wrong credentials"
@@ -63,10 +63,17 @@ const loginUser = async (req, res)=>{
     }catch(e){
         res.status(400).json({error: e})
     }
-
-        
-
-    
 }
 
-module.exports = {registerUser, loginUser}
+const getUser = async(req, res)=>{
+    res.json(req.user)
+}
+
+
+const generateToken = (id)=>{
+    return jwt.sign({id}, 'abc123', {
+        expiresIn: '20d'
+    })
+}
+
+module.exports = {registerUser, loginUser, getUser}

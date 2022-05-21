@@ -12,7 +12,8 @@ const getPosts = async (req, res)=>{
 const createPost = async (req, res)=>{
     let text = req.body.description
     let data = new Post({
-        description: text
+        description: text,
+        owner: req.user.id
     })
     try{
         const savedData = await data.save()
