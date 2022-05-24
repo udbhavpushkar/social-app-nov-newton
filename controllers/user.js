@@ -1,6 +1,7 @@
 const User = require("../models/user")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
+require('dotenv/config')
 
 const registerUser = async (req, res)=>{
     //Get user detail from request body and store it in varibles
@@ -71,7 +72,7 @@ const getUser = async(req, res)=>{
 
 
 const generateToken = (id)=>{
-    return jwt.sign({id}, 'abc123', {
+    return jwt.sign({id}, process.env.SECRET_KEY, {
         expiresIn: '20d'
     })
 }

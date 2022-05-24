@@ -1,6 +1,7 @@
 const { header } = require("express/lib/request")
 const jwt = require("jsonwebtoken")
 const User = require("../models/user")
+require('dotenv/config')
 
 const authorize = async(req, res, next)=>{
     try{
@@ -12,7 +13,7 @@ const authorize = async(req, res, next)=>{
             token = req.headers.authorization.split(" ")[1]
 
             //verify token
-            const decoded = jwt.verify(token, 'abc123')
+            const decoded = jwt.verify(token, process.env.SECRET_KEY)
 
             const currentUser = await User.findById(decoded.id).select('-password')
 

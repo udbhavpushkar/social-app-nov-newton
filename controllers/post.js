@@ -2,7 +2,7 @@ const Post = require("../models/post")
 
 const getPosts = async (req, res)=>{
     try{
-        const posts = await Post.find().sort({createdAt: -1})
+        const posts = await Post.find().populate('owner', 'name').sort({createdAt: -1})
         res.json(posts)
     }catch(e){
         res.status(404).json({error: e})
